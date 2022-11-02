@@ -1,9 +1,10 @@
-import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View, Dimensions, Text } from 'react-native';
+import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { StyleSheet, View, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_API_KEY } from './environments';
 import Constants from 'expo-constants';
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
+import MapViewDirections from 'react-native-maps-directions';
 
 const { width, height } = Dimensions.get('window');
 
@@ -52,7 +53,12 @@ function InputAutocomplete({
 export default function App() {
   const [origin, setOrigin] = useState<LatLng | null>();
   const [destination, setDestination] = useState<LatLng | null>();
+  const [showDirections,setShowDirections]= useState(false);
+  const [distance,setDistance]= useState(0);
+  const [duration,setDuration]= useState(0);
+
   const mapRef = useRef<MapView>(null)
+
   const moveTo = async (position: LatLng) => {
     const camera = await mapRef.current.getCamera()
     if (camera) {
@@ -60,7 +66,28 @@ export default function App() {
       mapRef.current?.animateCamera(camera, { duration: 1000 })
     }
   }
+  const edgePaddingValue = 70
 
+  const edgePadding= {
+    top: edgePaddingValue,
+    right: edgePaddingValue,
+    bottom: edgePaddingValue,
+    left: edgePaddingValue,
+  };
+
+  const traceRouteOnReady =(args:any) => {
+    if(args) {
+      setDistance(args.distance)
+      setDuration(args.duration)
+    }
+  }
+
+  const traceRoute = () => {
+    if (origin && destination){
+      setShowDirections(true)
+      mapRef.current?.fitToCoordinates([origin,destination],{edgePadding})
+    }
+  }
 
   const onPlaceSelected = (
     details: GooglePlaceDetail | null,
@@ -79,17 +106,36 @@ export default function App() {
         ref={mapRef}
         style={styles.map}
         provider={PROVIDER_GOOGLE}
-        initialRegion={INITIAL_POSITION} />
+        initialRegion={INITIAL_POSITION} >
+        {origin && <Marker coordinate={origin} />}
+        {destination && <Marker coordinate={destination} />}
+        {showDirections && origin && destination && (<MapViewDirections
+          origin={origin}
+          destination={destination}
+          apikey={GOOGLE_API_KEY}
+          strokeColor="#6644ff"
+          strokeWidth={4}
+          onReady={traceRouteOnReady}
+        />)}
+      </MapView>
       <View style={styles.searchContainer}>
 
         <InputAutocomplete
-          label="Origin"
+          label="Origen"
           onPlaceSelected={(details) => { onPlaceSelected(details, "origin") }} />
         <InputAutocomplete
-          label="Destination"
+          label="Destino"
           onPlaceSelected={(details) => {
             onPlaceSelected(details, "destination");
           }} />
+        <TouchableOpacity style={styles.button} onPress={traceRoute}>
+          <Text style={styles.buttonText}>Trazar Ruta</Text>
+        </TouchableOpacity>
+        {distance && duration ? (<View>
+          <Text>Distancia: {distance.toFixed(2)}</Text>
+          <Text>Duracion: {Math.ceil(duration)} min</Text>
+        </View>
+        ): null}
       </View>
 
     </View>
@@ -124,5 +170,14 @@ const styles = StyleSheet.create({
     borderColor: '#888',
     borderWidth: 1,
 
+  },
+  button:{
+    backgroundColor: "#bbb",
+    paddingVertical: 12,
+    marginTop: 16,
+    borderRadius: 4,
+  },
+  buttonText: {
+    textAlign: "center",
   }
 });
