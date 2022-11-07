@@ -1,9 +1,9 @@
 import { StyleSheet, Text,View } from "react-native";
 
-export function Acercade(){
+export function ChatBot(){
     return (
         <View style={styles.container}>
-            <Text>Acercade</Text>
+            <Text>ChatBot</Text>
         </View>
     )
 }

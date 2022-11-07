@@ -1,9 +1,9 @@
 import { StyleSheet, Text,View } from "react-native";
 
-export function Contacto(){
+export function Cajeros(){
     return (
         <View style={styles.container}>
-            <Text>Contacto</Text>
+            <Text>Cajeros</Text>
         </View>
     )
 }

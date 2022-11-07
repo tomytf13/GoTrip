@@ -1,9 +1,9 @@
 import { StyleSheet, Text,View } from "react-native";
 
-export function Categorias(){
+export function DestinosTuristicos(){
     return (
         <View style={styles.container}>
-            <Text>Categorias</Text>
+            <Text>Destinos Turisticos</Text>
         </View>
     )
 }

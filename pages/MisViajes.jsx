@@ -1,9 +1,9 @@
 import { Text,StyleSheet, View } from 'react-native';
 
-export function PuntosTuristicos() {
+export function MisViajes() {
     return (
         <View style={styles.container}>
-            <Text>PuntosTuristicos</Text>
+            <Text>Mis Viajes</Text>
         </View>
     );
 }
