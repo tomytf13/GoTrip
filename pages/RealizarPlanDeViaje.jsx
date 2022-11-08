@@ -1,6 +1,10 @@
 import { StyleSheet, Text, View, Platform, Button } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import React, {useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Categorias } from "./Categorias";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
 
 export function RealizarPlanDeViaje() {
 
@@ -8,6 +12,7 @@ export function RealizarPlanDeViaje() {
     const [date, setDate] = useState(new Date());
     const [textInicio, setTextInicio] = useState();
 
+    const navigation = useNavigation();
 
     const [datePickerFIN, setDatePickerFIN] = useState(false);
     const [dateFIN, setdateFIN] = useState(new Date());
@@ -32,6 +37,9 @@ export function RealizarPlanDeViaje() {
         let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
         setTextFIN(fDate)
         setDatePickerFIN(false);
+    }
+    function goToCategories(date,dateFIN){
+        navigation.na
     }
 
     return (
@@ -68,8 +76,10 @@ export function RealizarPlanDeViaje() {
                 </View>
             )}
                 <Text>Fecha de fin del plan : {textFIN}</Text>
-
-
+            
+            <View  style={{margin:10}}>
+            <Button title="Siguiente" onPress={()=>navigation.navigate('Categorias')}></Button>
+            </View>
         </View>
 
     )
