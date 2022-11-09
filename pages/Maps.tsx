@@ -3,7 +3,7 @@ import { StyleSheet, View, Dimensions, Text, TouchableOpacity } from 'react-nati
 import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_API_KEY } from '../environments';
 import Constants from 'expo-constants';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MapViewDirections from 'react-native-maps-directions';
 
 const { width, height } = Dimensions.get('window');
@@ -50,12 +50,48 @@ function InputAutocomplete({
   )
 }
 
-export default function Maps() {
+export default function Maps({route}) {
   const [origin, setOrigin] = useState<LatLng | null>();
   const [destination, setDestination] = useState<LatLng | null>();
   const [showDirections,setShowDirections]= useState(false);
   const [distance,setDistance]= useState(0);
   const [duration,setDuration]= useState(0);
+  const [showNewUbicaciones,setShowNewUbicaciones]= useState(true);
+
+  let arrayPuntos = [];
+  arrayPuntos= route.params;
+  
+  const SUNSTAR = {
+    latitude: -26.8219865,
+    longitude: 65.2695815,
+    latitudeDelta: LATITUD_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
+  const UBICACIONES = 
+  [
+    {
+      title:'Sunstar Cinema',
+      latitude: -26.8219865,
+      longitude:-65.2695815,
+      latitudeDelta: LATITUD_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+    {
+      title:'Teatro Juan Bautista Alberdi',
+      latitude: -26.8310045,
+      longitude:-65.2153067,
+      latitudeDelta: LATITUD_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+    {
+      title:"Teatro Mercedes Sosa",
+      latitude: -26.8296432,
+      longitude:-65.2063525,
+      latitudeDelta: LATITUD_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    }
+  ]
+
 
   const mapRef = useRef<MapView>(null)
 
@@ -119,6 +155,7 @@ export default function Maps() {
         />)}
       </MapView>
       <View style={styles.searchContainer}>
+      
 
         <InputAutocomplete
           label="Origen"
@@ -137,6 +174,7 @@ export default function Maps() {
         </View>
         ): null}
       </View>
+  
 
     </View>
   );

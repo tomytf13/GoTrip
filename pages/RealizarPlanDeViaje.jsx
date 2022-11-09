@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Categorias } from "./Categorias";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TextInput } from "react-native-gesture-handler";
 const Stack = createNativeStackNavigator();
 
 export function RealizarPlanDeViaje() {
@@ -38,13 +39,16 @@ export function RealizarPlanDeViaje() {
         setTextFIN(fDate)
         setDatePickerFIN(false);
     }
-    function goToCategories(date,dateFIN){
-        navigation.na
-    }
+   
 
     return (
         <View style={styles.container}>
-            <Text style={{fontWeight:'bold',fontSize:20}}>Nuevo plan de viaje</Text>
+            <Text style={{fontWeight:'bold',fontSize:20, marginBottom:20}}>Nuevo plan de viaje</Text>
+           
+            <View >
+                <Text style={{margin:10}}>Descripcion del plan de viaje </Text>
+            <TextInput  style={styles.input} placeholder="Descripcion"></TextInput>
+            </View>
             {datePicker && (
                 <DateTimePicker
                     value={date}
@@ -55,11 +59,15 @@ export function RealizarPlanDeViaje() {
                 />
             )}
             {!datePicker && (
-                <View style={{margin:10}}>
+                <View style={{margin:40}}>
                     <Button title="Fecha de inicio" onPress={showDatePicker}></Button>
                 </View>
             )}
+            {textInicio &&(
                 <Text>Fecha de inicio del plan : {textInicio}</Text>
+            )
+
+            }
 
             {datePickerFIN && (
                 <DateTimePicker
@@ -71,13 +79,15 @@ export function RealizarPlanDeViaje() {
                 />
             )}
             {!datePickerFIN && (
-                <View style={{margin:10}}>
+                <View style={{margin:40}}>
                     <Button title="Fecha de fin" onPress={showDatePickerFin}></Button>
                 </View>
             )}
+            {textFIN && (
                 <Text>Fecha de fin del plan : {textFIN}</Text>
+            )}
             
-            <View  style={{margin:10}}>
+            <View  style={{margin:50}}>
             <Button title="Siguiente" onPress={()=>navigation.navigate('Categorias')}></Button>
             </View>
         </View>
@@ -92,5 +102,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#F5FCFF'
     },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+      },
   });
   
