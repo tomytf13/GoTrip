@@ -14,20 +14,20 @@ export function EventosActivos() {
             data: ['Entretenimiento', "Gastronomia", "Museos"]
         }
     ]
-    const entretenimiento = ['Sunstar Cinema',
-    'Teatro Juan Bautista Alberdi',
-    'Teatro Mercedes Sosa',
-]
-const gastronomia = [
-    'Birrafest',
-    'Fiesta de la milanesa',
-    'Fiesta de los tacos',
-]
-const museos = [
-    'Museo Historico Pte. Nicolas Avellaneda',
-    'Casa Historica',
-    'Museo Casa Padilla'
-]
+     const entretenimiento = ['Sunstar Cinema',
+        'Teatro Juan Bautista Alberdi',
+        'Teatro Mercedes Sosa',
+    ]
+    const gastronomia = [
+        'Pizza Boom',
+        'La Pizzada',
+        'Los Electricos',
+    ]
+    const museos = [
+        'Museo Historico Pte. Nicolas Avellaneda',
+        'Casa Historica',
+        'Museo Casa Padilla'
+    ]
     
     function showPuntosTuristicos(item) {
         console.log(item);
