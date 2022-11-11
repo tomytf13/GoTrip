@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TextInput, View, SafeAreaView, SectionList, StatusBar, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TextInput, View, SafeAreaView, SectionList, StatusBar, Button, TouchableOpacity, Touchable } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 
 export function EventosActivos() {
@@ -7,6 +7,8 @@ export function EventosActivos() {
     const [showGastronomia, setShowGastronomia] = useState();
     const [showMuseos, setShowMuseos] = useState();
     const [showCategorias, setShowCategorias] = useState(true);
+    const navigation = useNavigation();
+    const [puntos, setPuntos] = useState([]);
 
     const EVENTOS = [
         {
@@ -14,21 +16,16 @@ export function EventosActivos() {
             data: ['Entretenimiento', "Gastronomia", "Museos"]
         }
     ]
-     const entretenimiento = ['Sunstar Cinema',
-        'Teatro Juan Bautista Alberdi',
-        'Teatro Mercedes Sosa',
+    const entretenimiento = ['BirraFest'
     ]
     const gastronomia = [
-        'Pizza Boom',
-        'La Pizzada',
-        'Los Electricos',
+        'Ruta del Vino',
+
     ]
     const museos = [
-        'Museo Historico Pte. Nicolas Avellaneda',
-        'Casa Historica',
-        'Museo Casa Padilla'
+        'Museos historicos'
     ]
-    
+
     function showPuntosTuristicos(item) {
         console.log(item);
         if (item === "Entretenimiento") {
@@ -45,9 +42,34 @@ export function EventosActivos() {
         }
 
     }
+    function goToRutaDelVino(opciones) {
+        showPuntosTuristicos(opciones);
+        navigation.navigate('Ruta Del Vino');
+
+    }
+    function goToMuseos(opciones) {
+        showPuntosTuristicos(opciones);
+        navigation.navigate('Museos');
+
+    }
+    function goToBirraFest(opciones) {
+        showPuntosTuristicos(opciones);
+        navigation.navigate('BirraFest');
+
+    }
+
+    function backCategorias() {
+        setShowCategorias(!showCategorias)
+        setShowEntretenimiento(false)
+        setShowGastronomia(false)
+        setShowMuseos(false)
+    }
+
     return (
+
         <SafeAreaView style={styles.container}>
-            <SectionList
+
+            {showCategorias && (<SectionList
                 sections={EVENTOS}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item }) =>
@@ -61,6 +83,68 @@ export function EventosActivos() {
                     <Text style={styles.header}>{title}</Text>
                 )}
             />
+
+            )
+            }
+            
+               {showMuseos && (
+                <View style={styles.opciones}>
+                    <Text style={styles.title}>Museos</Text>
+                    {
+                        museos.map(opciones => (
+                            <View key={opciones} style={styles.puntos}>
+                                <Text style={styles.puntosName}>{opciones}</Text>
+                                <Button
+                                    color={'grey'}
+                                    title={'Ver recorrido'}
+                                    onPress={() => goToMuseos(opciones)}
+                                >
+                                </Button>
+                            </View>
+                        ))}
+                </View>
+
+            )}
+              {showEntretenimiento && (
+                <View style={styles.opciones}>
+                    <Text style={styles.title}>Museos</Text>
+                    {
+                        entretenimiento.map(opciones => (
+                            <View key={opciones} style={styles.puntos}>
+                                <Text style={styles.puntosName}>{opciones}</Text>
+                                <Button
+                                    color={'green'}
+                                    title={'Ver recorrido'}
+                                    onPress={() => goToBirraFest(opciones)}
+                                >
+                                </Button>
+                            </View>
+                        ))}
+                </View>
+
+            )}
+            {showGastronomia && (
+                <View style={styles.opciones}>
+                    <Text style={styles.title}>Gastronomia</Text>
+                    {
+                        gastronomia.map(opciones => (
+                            <View key={opciones} style={styles.puntos}>
+                                <Text style={styles.puntosName}>{opciones}</Text>
+                                <Button
+                                    color={'#722F37'}
+                                    title={'Ver recorrido'}
+                                    onPress={() => goToRutaDelVino(opciones)}
+                                >
+                                </Button>
+                            </View>
+                        ))}
+                </View>
+
+            )}
+
+            <View style={styles.button}>
+                <Button title="Back to Categorias" onPress={() => backCategorias()}></Button>
+            </View>
         </SafeAreaView>
     );
 }
@@ -112,7 +196,8 @@ const styles = StyleSheet.create({
     },
     puntosName: {
         textTransform: 'capitalize',
-        fontSize: 16
+        fontSize: 16,
+        margin: 10
     },
     button: {
         margin: 15

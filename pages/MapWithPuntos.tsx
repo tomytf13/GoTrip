@@ -48,6 +48,30 @@ export default function MapWithPuntos({route}) {
     longitudeDelta: LONGITUDE_DELTA,
   };
 
+
+  const CASA_HISTORICA =
+  {
+    latitude: -26.8333693,
+    longitude: -65.2043514,
+    latitudeDelta: LATITUD_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  }
+
+  const LOS_ELECTRICOS =
+  {
+    latitude: -26.8155545,
+    longitude: -65.2160681,
+    latitudeDelta: LATITUD_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  }
+  const SUNSTAR = {
+    latitude: -26.8219865,
+    longitude: -65.2695815,
+    latitudeDelta: LATITUD_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
+
+ 
   let arrayPuntos = [];
   arrayPuntos= route.params;
 
@@ -70,12 +94,7 @@ export default function MapWithPuntos({route}) {
     }
  }, [arrayPuntos]);
   
-  const SUNSTAR = {
-    latitude: -26.8219865,
-    longitude: 65.2695815,
-    latitudeDelta: LATITUD_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
-  };
+
   const UBICACIONES = 
   [
     {
@@ -105,18 +124,42 @@ export default function MapWithPuntos({route}) {
     <View style={styles.container}>
         <MapView
             style={StyleSheet.absoluteFill}
-            initialRegion={pickupCords}
+            initialRegion={INITIAL_POSITION}
         >
+              <Marker
+                pinColor={'red'}
+                coordinate={CASA_HISTORICA}
+                title={"Casa historica de Tucuman"}
+                description={'Museo de historia Argentina'}
+              ></Marker>
             <MapViewDirections
-                origin={pickupCords}
-                destination={droplocationCords}
+                strokeColor='blue'
+                strokeWidth={3}
+                origin={CASA_HISTORICA}
+                destination={LOS_ELECTRICOS}
                 apikey={GOOGLE_API_KEY}
             ></MapViewDirections>
-             <MapViewDirections
-                origin={droplocationCords}
-                destination={INITIAL_POSITION}
+            <Marker
+                pinColor={'purple'}
+                coordinate={LOS_ELECTRICOS}
+                
+                title={"Los Electricos"}
+                description={'Restaurant de comidas rapidasr'}
+              ></Marker>
+                <MapViewDirections
+                strokeColor='black'
+                strokeWidth={3}
+                origin={LOS_ELECTRICOS}
+                destination={SUNSTAR}
                 apikey={GOOGLE_API_KEY}
             ></MapViewDirections>
+             <Marker
+                pinColor={'blue'}
+                coordinate={SUNSTAR}
+                
+                title={"Shopping Sunstar"}
+                description={'Patio de comidas'}
+              ></Marker>
         </MapView>
     </View>
   );
